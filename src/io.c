@@ -6,9 +6,9 @@ void uart_init() {
     unsigned int selector;
 
 	selector = get32(GPFSEL1);				  // pins 10-19
-	selector &= ~(7 << 12);                   // gpio14
+	selector &= ~(7 << 12);                   // clear gpio14
 	selector |= 2 << 12;                      // set alt5 for gpio14
-	selector &= ~(7 << 15);                   // gpio15
+	selector &= ~(7 << 15);                   // clear gpio15
 	selector |= 2 << 15;                      // set alt5 for gpio15
 	put32(GPFSEL1, selector);
 
@@ -28,17 +28,18 @@ void uart_init() {
 	put32(AUX_MU_CNTL_REG, 3); // 
 }
 
-void uart_send(unsigned char ch) {
+void uart_send(char ch) {
     while (!(get32(AUX_MU_LSR_REG) & 0x20)); 
-    put32(AUX_MU_IO_REG, (unsigned int)ch);
+    put32(AUX_MU_IO_REG, ch);
 }
 
 char uart_recv() {
     while (!(get32(AUX_MU_LSR_REG) & 0x01)); 
-    return (unsigned char)(get32(AUX_MU_IO_REG) & 0xFF);
+    return (get32(AUX_MU_IO_REG) & 0xFF);
 }
 
 void putc(void* p, char c) {
+	if (c == '\n') uart_send('\r');
 	uart_send(c);
 }
 

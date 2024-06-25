@@ -6,7 +6,7 @@
 #include "peripherals/irq.h"
 
 void enable_interrupt_controller() {
-    put32(ENABLE_IRQS_1, SYSTEM_TIMER_IRQ_1 | AUX_IRQ);
+    put32(ENABLE_IRQS_1, AUX_IRQ);
 }
 
 void entry_error(int type, unsigned long esr, unsigned long address) {
@@ -24,7 +24,7 @@ void handle_irq() {
                 handle_uart_irq();
                 break;
             default:
-                printf("Unkownn pending irq: %x\r\n", irq);
+                printf("Unkown pending irq: %x\n", irq);
                 return;
         }
     }

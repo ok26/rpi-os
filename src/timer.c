@@ -15,5 +15,5 @@ void handle_timer_irq()  {
 	curTick += interval;
 	put32(TIMER_C1, curTick);
 	put32(TIMER_CS, TIMER_CS_M1);
-	printf("Recieved timer interrupt\r\n");
+	printf("Recieved timer interrupt\n");
 }
